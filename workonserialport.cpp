@@ -36,7 +36,7 @@ void workOnSerialPort::writeDataToPort(QByteArray data)
 {
     if (m_serialPort->isOpen()) {
         m_serialPort->write(data);
-        emit reportMessage(m_data->toHex().toUpper().data());
+        emit reportMessage(data.toHex().toUpper().data());
     }
 }
 

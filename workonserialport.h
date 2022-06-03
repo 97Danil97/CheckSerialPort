@@ -11,6 +11,12 @@ class workOnSerialPort : public QObject
     Q_OBJECT
 
 public:
+
+    /*!
+     * \brief workOnSerialPort - конструктор класса
+     * \param parent - указатель на класс "родителя"
+     * \param serialPort - указатель на RS порт
+     */
     workOnSerialPort(QSerialPort *serialPort, QObject *parent );
 
     ~workOnSerialPort( void );
@@ -34,8 +40,16 @@ private:
 
 signals:
 
+    /*!
+     * \brief reportMessage - сигнал отправки сообщения
+     * \param str - сообщение
+     */
     void reportMessage(QString str);
 
+    /*!
+     * \brief recivedMessage - сигнал о полученом сообщении
+     * \param str - сообщение
+     */
     void recivedMessage(QString str);
 };
 

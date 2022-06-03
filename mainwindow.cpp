@@ -53,14 +53,14 @@ void MainWindow::setConnect()
 {
     connect(m_serialPort, &workOnSerialPort::reportMessage, this, &MainWindow::onReportMessage);
     connect(m_serialPort, &workOnSerialPort::recivedMessage, this, &MainWindow::onRecivedMessage);
-    connect(this, &MainWindow::reportMessagetoCan, m_serialPort, &workOnSerialPort::writeDataToPort);
+    connect(this, &MainWindow::reportMessagetoRS, m_serialPort, &workOnSerialPort::writeDataToPort);
 }
 
 void MainWindow::unConnect()
 {
     disconnect(m_serialPort, &workOnSerialPort::reportMessage, this, &MainWindow::onReportMessage);
     disconnect(m_serialPort, &workOnSerialPort::recivedMessage, this, &MainWindow::onRecivedMessage);
-    disconnect(this, &MainWindow::reportMessagetoCan, m_serialPort, &workOnSerialPort::writeDataToPort);
+    disconnect(this, &MainWindow::reportMessagetoRS, m_serialPort, &workOnSerialPort::writeDataToPort);
 }
 
 void MainWindow::onReportMessage(QString str)
@@ -443,6 +443,14 @@ void MainWindow::on_pushButtonSendMessage_clicked()
 {
     bool ok;
     int digit;
+    if(isStart == false){
+        onReportMessage(tr("Порт не открыт"));
+    }
+
+    if(numberOfBytes == 0){
+        onReportMessage(tr("Недостаточно байт для отправки"));
+    }
+
     QByteArray array;
     switch (numberOfBytes) {
     case 0:
@@ -450,34 +458,23 @@ void MainWindow::on_pushButtonSendMessage_clicked()
     case 1:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     case 2:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
         array.append(digit);
         digit = ui->lineEditbyte_2->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     case 3:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
         array.append(digit);
-        qDebug() << "1: " << QString::number(digit,16);
-        qDebug() << "1: " << array.toHex().toUpper().data();
-
         digit = ui->lineEditbyte_2->text().toInt(&ok,16);
         array.append(digit);
-        qDebug() << "2: " << QString::number(digit,16);
-        qDebug() << "2: " << array.toHex().toUpper().data();
-
         digit = ui->lineEditbyte_3->text().toInt(&ok,16);
         array.append(digit);
-        qDebug() << "3: " << QString::number(digit,16);
-        qDebug() << "3: " << array.toHex().toUpper().data();
-
-        emit reportMessagetoCan(array);
-
-        qDebug() << "Repotr: " << array.toHex().toUpper().data();
+        emit reportMessagetoRS(array);
         break;
     case 4:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
@@ -488,7 +485,7 @@ void MainWindow::on_pushButtonSendMessage_clicked()
         array.append(digit);
         digit = ui->lineEditbyte_4->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     case 5:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
@@ -501,7 +498,7 @@ void MainWindow::on_pushButtonSendMessage_clicked()
         array.append(digit);
         digit = ui->lineEditbyte_5->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     case 6:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
@@ -516,7 +513,7 @@ void MainWindow::on_pushButtonSendMessage_clicked()
         array.append(digit);
         digit = ui->lineEditbyte_6->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     case 7:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
@@ -533,7 +530,7 @@ void MainWindow::on_pushButtonSendMessage_clicked()
         array.append(digit);
         digit = ui->lineEditbyte_7->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     case 8:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
@@ -552,7 +549,7 @@ void MainWindow::on_pushButtonSendMessage_clicked()
         array.append(digit);
         digit = ui->lineEditbyte_8->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     case 9:
         digit = ui->lineEditbyte->text().toInt(&ok,16);
@@ -573,7 +570,7 @@ void MainWindow::on_pushButtonSendMessage_clicked()
         array.append(digit);
         digit = ui->lineEditbyte_9->text().toInt(&ok,16);
         array.append(digit);
-        emit reportMessagetoCan(array);
+        emit reportMessagetoRS(array);
         break;
     }
 }
